@@ -21,14 +21,21 @@ app.get('/file/:filename', function(req, res) {
 });
 
 app.get('/edit/:filename', function(req, res) {
-    res.render('edit');
+    res.render('edit', {filename: req.params.filename});
+});
+
+app.post('/edit', function(req, res) {
+    fs.rename(`./files/${req.body.previous}`,`./files/${req.body.new}`, function(err){
+        res.redirect("/")
+    });
+
 });
 
 app.post('/create', (req, res) => {
-    fs.writeFile(`./files/${req.body.title.split(' ').join('.')}.txt`, req.body.details, function(err) {
+    fs.writeFile(`./files/${req.body.title.split(' ').join(' ')}.txt`, req.body.details, function(err) {
         res.redirect("/");
     });
-});
+ });
 
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
